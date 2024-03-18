@@ -60,19 +60,6 @@ class MainActivity : ComponentActivity() {
                     ) {
 
                         val navController = rememberNavController()
-                        var backStack by remember { mutableStateOf("") }
-
-                        LaunchedEffect(Unit) {
-                            // Création d'un écouteur pour les changements de destination
-                            val listener = NavController.OnDestinationChangedListener { controller, _, _ ->
-                                backStack = controller.currentBackStack.value
-                                    .mapNotNull { it.destination.route } // Assurez-vous de filtrer les routes nulles
-                                    .joinToString("/")
-                            }
-
-                            navController.addOnDestinationChangedListener(listener)
-                        }
-
 
                         val routes = listOf("blue", "green", "red")
                         var selectedRoute by remember { mutableStateOf(routes.first()) }
@@ -86,6 +73,7 @@ class MainActivity : ComponentActivity() {
                             Column(
                                 modifier = Modifier.padding(12.dp)
                             ) {
+                                Text(text = "Select a route to navigate to")
                                 SingleChoiceSegmentedButtonRow(
                                     modifier = Modifier
                                         .fillMaxWidth()
@@ -211,14 +199,6 @@ class MainActivity : ComponentActivity() {
                                     )
                                 }
                             }
-
-
-
-                            Text(
-                                text = backStack,
-                                color = Color.Black
-                            )
-
 
                             NavHost(navController = navController, startDestination = "blue"){
                                 composable("blue"){
